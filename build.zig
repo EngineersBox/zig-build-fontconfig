@@ -25,8 +25,8 @@ pub fn build(b: *std.Build) !void {
         lib.linkLibrary(libxml2_dep.artifact("xml2"));
     }
 
-    lib.addIncludePath(.{ .path = "upstream" });
-    lib.addIncludePath(.{ .path = "override/include" });
+    lib.addIncludePath(b.path("upstream"));
+    lib.addIncludePath(b.path("override/include"));
 
     var flags = std.ArrayList([]const u8).init(b.allocator);
     defer flags.deinit();
@@ -110,9 +110,8 @@ pub fn build(b: *std.Build) !void {
     // OpenBSD: https://man.openbsd.org/statvfs.3#HISTORY Since 4.4
     // FreeBSD: https://man.freebsd.org/cgi/man.cgi?statvfs#end Since 5.0
     // NetBSD: https://man.netbsd.org/statvfs.2#HISTORY Since 3.0
-    // MacOS: Unsure?
     const has_statvfs: bool = switch (target.result.os.tag) {
-        .linux, .openbsd, .freebsd, .netbsd, .macos => true,
+        .linux, .openbsd, .freebsd, .netbsd => true,
         else => false,
     };
     if (has_statvfs) {
@@ -138,10 +137,13 @@ pub fn build(b: *std.Build) !void {
         });
     }
 
-    lib.addCSourceFiles(srcs, flags.items);
+    lib.addCSourceFiles(.{
+        .files = srcs,
+        .flags = flags.items,
+    });
 
     inline for (headers) |header| {
-        lib.installHeader("upstream/" ++ header, header);
+        lib.installHeader(b.path("upstream/" ++ header), header);
     }
 
     b.installArtifact(lib);
