@@ -1,10 +1,16 @@
-.{ .name = .fontconfig, .version = "0.0.0", .fingerprint = 0x4a79a5acab11df3, .dependencies = .{
-    .freetype = .{
-        .url = "https://github.com/engineersbox/zig-build-freetype/archive/b6b0636645dbcad2d924026870bd74da80dec2e9.tar.gz",
-        .hash = "freetype-0.0.0-LUnkpjhoqAA-vkfY7BejloOxUPUxVAZPtt_mciKEDmNM",
-    },
-    .libxml2 = .{
-            .url = "https://github.com/engineersbox/zig-build-libxml2/archive/4b4a048bc744da2bc45aac3c0da81f11f4c62efa.tar.gz",
-            .hash = "N-V-__8AAMhangC_UqCYCJ-QRx2h6TzLO_y2_494w0D06AoH",
+.{
+    .name = .fontconfig,
+    .version = "0.0.0",
+    .fingerprint = 0x4a79a5acab11df3,
+    .dependencies = .{
+        .freetype = .{
+            .url = "https://github.com/engineersbox/zig-build-freetype/archive/b6b0636645dbcad2d924026870bd74da80dec2e9.tar.gz",
+            .hash = "freetype-0.0.0-LUnkpjhoqAA-vkfY7BejloOxUPUxVAZPtt_mciKEDmNM",
         },
-}, .paths = .{""} }
+        .libxml2 = .{
+            .url = "https://github.com/engineersbox/zig-build-libxml2/archive/a404b0688b5e389f69aaaef3688ef0424518b22f.tar.gz",
+            .hash = "N-V-__8AAOxangDiOp5yzFx5BHPtsH5244l1JPPXsdcsErRd",
+        },
+    },
+    .paths = .{""},
+}
