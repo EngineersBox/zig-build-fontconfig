@@ -1,5 +1,4 @@
 const std = @import("std");
-const NativeTargetInfo = std.zig.system.NativeTargetInfo;
 
 pub fn build(b: *std.Build) !void {
     const target = b.standardTargetOptions(.{});
@@ -14,7 +13,7 @@ pub fn build(b: *std.Build) !void {
         .optimize = optimize,
     });
     lib.linkLibC();
-    if (!target.isWindows()) {
+    if (target.result.os.tag != .windows) {
         lib.linkSystemLibrary("pthread");
     }
     if (freetype_enabled) {
@@ -90,8 +89,7 @@ pub fn build(b: *std.Build) !void {
         "-fno-sanitize=undefined",
         "-fno-sanitize-trap=undefined",
     });
-    const target_info = try NativeTargetInfo.detect(target);
-    switch (target_info.target.ptrBitWidth()) {
+    switch (target.result.ptrBitWidth()) {
         32 => try flags.appendSlice(&.{
             "-DSIZEOF_VOID_P=4",
             "-DALIGNOF_VOID_P=4",
@@ -104,13 +102,26 @@ pub fn build(b: *std.Build) !void {
 
         else => @panic("unsupported arch"),
     }
-    if (target.isLinux()) {
+    // This could be somewhat version specific, but it seems like
+    // more of a pain than it is worth and these are old versions.
+    // Let's just assume Unix-like systems have it available.
+    //
+    // Generic Linux: Unsure?
+    // OpenBSD: https://man.openbsd.org/statvfs.3#HISTORY Since 4.4
+    // FreeBSD: https://man.freebsd.org/cgi/man.cgi?statvfs#end Since 5.0
+    // NetBSD: https://man.netbsd.org/statvfs.2#HISTORY Since 3.0
+    // MacOS: Unsure?
+    const has_statvfs: bool = switch (target.result.os.tag) {
+        .linux, .openbsd, .freebsd, .netbsd, .macos => true,
+        else => false,
+    };
+    if (has_statvfs) {
         try flags.appendSlice(&.{
             "-DHAVE_SYS_VFS_H",
             "-DHAVE_SYS_STATFS_H",
         });
     }
-    if (!target.isWindows()) {
+    if (target.result.os.tag != .windows) {
         try flags.appendSlice(&.{
             "-DHAVE_PTHREAD",
 
