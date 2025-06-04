@@ -8,8 +8,8 @@
             .hash = "freetype-0.0.0-LUnkpjhoqAA-vkfY7BejloOxUPUxVAZPtt_mciKEDmNM",
         },
         .libxml2 = .{
-            .url = "https://github.com/engineersbox/zig-build-libxml2/archive/a404b0688b5e389f69aaaef3688ef0424518b22f.tar.gz",
-            .hash = "N-V-__8AAOxangDiOp5yzFx5BHPtsH5244l1JPPXsdcsErRd",
+            .url = "https://github.com/engineersbox/zig-build-libxml2/archive/3220d51f000b67d1fc758baa52771db26f3afda2.tar.gz",
+            .hash = "N-V-__8AAOQLaADxxIqnoAuDNVsqeQUiPdqM1Xv3ejY3ZS3-",
         },
     },
     .paths = .{""},
